@@ -155,16 +155,18 @@ public class VentanaAutocar extends JFrame {
 		String matricula = txtMatricula.getText();
 		String marca = txtMarca.getText();
 		String modelo = txtModelo.getText();
-		int kilometros = Integer.parseInt(txtKilometros.getText());
+		int kilometros = 0;
 		int plazas = (int) spinner.getValue();
 		
 		Autocar a = new Autocar(matricula, marca, modelo, kilometros, plazas);
 		if (matricula == null || matricula.isBlank()
 				|| marca==null || marca.isBlank()
 				|| modelo==null || modelo.isBlank()
-				|| kilometros <0  ) {
+			 || txtKilometros.getText().isBlank()) {
 			JOptionPane.showMessageDialog(this, "Hay datos sin introducir. Por favor, introduzca todos los datos requeridos.", "Faltan datos", JOptionPane.ERROR_MESSAGE);
+			return;
 		}
+		Integer.parseInt(txtKilometros.getText());
 		
 		if (!listaAutocares.contains(a)) {
 			listaAutocares.add(a);
