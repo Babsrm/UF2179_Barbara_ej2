@@ -126,6 +126,12 @@ public class VentanaAutocar extends JFrame {
 				"Marca", "Modelo", "Kil\u00F3metros", "Plazas", "Matr\u00EDcula"
 			}
 		) {
+			Class[] columnTypes = new Class[] {
+				String.class, String.class, Integer.class, Integer.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
 			boolean[] columnEditables = new boolean[] {
 				false, false, false, false, false
 			};
@@ -152,29 +158,32 @@ public class VentanaAutocar extends JFrame {
 	}
 
 	protected void insertar() {
+		try { //para poder controlar el que km no esté en vacio, he tenido que meter un numberformatexception con el try catch. he metido todo el código dentro. si falla, sale por el catch y me muestra el error. sino, se ejecuta.
 		String matricula = txtMatricula.getText();
 		String marca = txtMarca.getText();
 		String modelo = txtModelo.getText();
-		int kilometros = 0;
+		int kilometros = Integer.parseInt(txtKilometros.getText());
 		int plazas = (int) spinner.getValue();
 		
 		Autocar a = new Autocar(matricula, marca, modelo, kilometros, plazas);
+		
 		if (matricula == null || matricula.isBlank()
 				|| marca==null || marca.isBlank()
-				|| modelo==null || modelo.isBlank()
-			 || txtKilometros.getText().isBlank()) {
+				|| modelo==null || modelo.isBlank()){
 			JOptionPane.showMessageDialog(this, "Hay datos sin introducir. Por favor, introduzca todos los datos requeridos.", "Faltan datos", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		Integer.parseInt(txtKilometros.getText());
-		
-		if (!listaAutocares.contains(a)) {
+			return;}
+			
+			if (!listaAutocares.contains(a)) {
 			listaAutocares.add(a);
 		} else {
 			JOptionPane.showMessageDialog(this, "La matrícula introducida ya existe en la base de datos.", "Matrícula incorrecta", JOptionPane.ERROR_MESSAGE);
+		} 
+		} 
+		catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Hay datos sin introducir. Por favor, introduzca los kilómetros.", "Faltan datos", JOptionPane.ERROR_MESSAGE);
 		}
-		
 	}
+
 	protected void mostrarDatos() {
 		DefaultTableModel modelo = (DefaultTableModel) table.getModel();
 		modelo.setRowCount(0); 
